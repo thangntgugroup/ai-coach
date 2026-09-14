@@ -5,8 +5,12 @@ import { useNavigation, type CompositeNavigationProp } from '@react-navigation/n
 import { useBottomTabBarHeight, type BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useAuth } from '@/context/AuthProvider';
-import { MAIN_TAB_ROUTES, ROOT_ROUTES } from '@/navigation/routes';
-import type { MainTabParamList, RootStackParamList } from '@/navigation/types';
+import {
+  MAIN_TAB_ROUTES,
+  ROOT_ROUTES,
+  type MainTabParamList,
+  type RootStackParamList,
+} from '@/navigation/routes';
 import HomeHeader from './HomeHeader';
 import TodaySessionCard from './TodaySessionCard';
 import ProgressStats from './ProgressStats';
@@ -25,7 +29,7 @@ export default function HomeScreen() {
   const tabBarHeight = useBottomTabBarHeight();
 
   return (
-    <View className="flex-1 bg-brand-page dark:bg-brandDark-page">
+    <View className="flex-1 bg-brand-page">
       <SafeAreaView className="flex-1" edges={['top']}>
         <ScrollView
           className="flex-1"
@@ -34,13 +38,18 @@ export default function HomeScreen() {
           showsVerticalScrollIndicator={false}>
           <HomeHeader
             name={user?.name ?? null}
-            onPressAvatar={() => navigation.navigate(ROOT_ROUTES.PROFILE)}
+            onPress={() => navigation.navigate(ROOT_ROUTES.PROFILE)}
           />
           <TodaySessionCard onStart={() => navigation.navigate(MAIN_TAB_ROUTES.PRACTICE)} />
           <ProgressStats />
           <CommitmentsCard />
           <SkillsCard />
-          <ProfileLinksCard onPressRow={() => navigation.navigate(MAIN_TAB_ROUTES.ANALYSIS)} />
+          <ProfileLinksCard
+            onPressReports={() => navigation.navigate(MAIN_TAB_ROUTES.ANALYSIS)}
+            onPressReassess={() =>
+              navigation.navigate(ROOT_ROUTES.DIAGNOSTIC_GATE, { mode: 'revisit' })
+            }
+          />
         </ScrollView>
       </SafeAreaView>
     </View>
